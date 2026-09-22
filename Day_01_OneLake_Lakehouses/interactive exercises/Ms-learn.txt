@@ -1,0 +1,3 @@
+file link
+https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/01-lakehouse.html
+
