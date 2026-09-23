@@ -25,7 +25,7 @@
 - **Snowflake schema** — dimensions normalized further into sub-dimensions (e.g., splitting Customer into Customer + Region).
 - **Surrogate key** — system-generated integer identifier (e.g., ProductKey).
 - **Alternate/business key** — the original, human-meaningful identifier the business uses.
-![](images/dimensional modeling.png)
+![](images/dimensional_modeling.png)
 
 ### Fabric Data Warehouse Capabilities
 - Full **T-SQL**: CREATE, ALTER, DROP, INSERT, UPDATE, DELETE, MERGE all supported.
@@ -55,7 +55,7 @@ All rules apply consistently regardless of access path (web editor, SSMS, Power 
 
 ### Two Ways to Query/Transform
 
-![](images/sql visual query.png)
+![](images/sql_visual_query.png)
 
 **Views** — saved, reusable query definitions so every analyst queries from the same shared logic (avoids inconsistent, non-performant duplicate queries).
 **Stored procedures** — go further: multi-step logic, accept parameters, error handling via TRY/CATCH.
@@ -86,7 +86,7 @@ All rules apply consistently regardless of access path (web editor, SSMS, Power 
    - `DimCustomer`, `DimDate`, `DimProduct`, `FactSalesOrder`
 5. **Queried fact + dimension tables** — aggregated sales revenue by year/month, then extended to a second dimension (sales region) using JOINs + GROUP BY.
 6. **Created a view** (`vSalesByRegion`) to save the aggregation query for reuse — queried it with a simple `SELECT * FROM vSalesByRegion`.
-7. **Visual Query (no-code)**: dragged `FactSalesOrder` + `DimProduct` onto canvas → merged on `ProductKey` (left outer join) → expanded `ProductName` → visualized results as a chart / exported to Excel.![](images/visual query.png)
+7. **Visual Query (no-code)**: dragged `FactSalesOrder` + `DimProduct` onto canvas → merged on `ProductKey` (left outer join) → expanded `ProductName` → visualized results as a chart / exported to Excel.![](images/visual_query.png)
 8. **(Optional) Built a semantic model / star schema**:
    - Created relationships: `FactSalesOrder.ProductKey → DimProduct.ProductKey`, `.CustomerKey → DimCustomer.CustomerKey`, `.SalesOrderDateKey → DimDate.DateKey` — all many-to-one, single cross-filter direction.
 9. Cleaned up: removed workspace when done.
@@ -172,7 +172,7 @@ StockTable
 3. Queried average stock price grouped by symbol over the last 5 minutes.
 4. Saved query to a new dashboard ("Stock Dashboard") → renamed tile ("Average Prices") → changed visual from table to column chart → customized colors/sort order (with Copilot help for the underlying KQL).
 5. Created an **Activator alert**: run query every 5 minutes, group by symbol, trigger (email/Teams) if average price increases by more than 100.
-![Workspace lineage diagram showing the end-to-end real-time pipeline built in Exercise 4. The Eventstream (stock-data) ingests the sample stock market data and feeds it into the Eventhouse (stockdata-eventhouse), which houses the KQL Database. From there, two downstream items were created: a KQL Queryset for writing/running KQL queries, and a Real-Time Dashboard (StockDashboard) for live visualization.](images/Stock data.png)
+![Workspace lineage diagram showing the end-to-end real-time pipeline built in Exercise 4. The Eventstream (stock-data) ingests the sample stock market data and feeds it into the Eventhouse (stockdata-eventhouse), which houses the KQL Database. From there, two downstream items were created: a KQL Queryset for writing/running KQL queries, and a Real-Time Dashboard (StockDashboard) for live visualization.](images/Stock_data.png)
 
 ## Key Takeaways
 
