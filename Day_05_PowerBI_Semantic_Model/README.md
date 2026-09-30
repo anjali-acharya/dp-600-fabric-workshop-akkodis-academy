@@ -126,6 +126,15 @@ Sales by Ship Date = CALCULATE(
 
 ---
 
+## Exercise 2 - Design a semantic model for scale
+
+🔗 **Lab:** [Design a semantic model for scale](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/15-design-semantic-model-scale.html)
+📄 **My completed file:** *(`sales_report.pbix`)*
+![](images/day5-semantic-model.png)
+Unlike Exercise 1, this one runs entirely in the **Fabric web experience** against a lakehouse (a provided notebook seeds `DimDate`, `DimProduct`, `DimCustomer`, and a 5,000-row `FactSales` table), and it's the concrete, hands-on version of everything the session only demoed conceptually. You build a **Direct Lake** semantic model straight off those lakehouse tables, wire up the star schema with **single-direction, active relationships** and **assume referential integrity** checked (so the engine uses inner joins), and add a **fourth, inactive** relationship on `ShipDateKey` - the role-playing-dimension case from earlier. On top of four explicit measures (`Total Sales`, `Total Cost`, `Profit`, `Profit Margin`), you build an actual **calculation group** (`Time Calculations`) with six time-intelligence items - Current, Year-to-Date, Quarter-to-Date, Month-to-Date, Previous Year, and Year-over-Year Growth - that apply automatically to all four base measures instead of requiring 24 separate ones. A `Sales by Ship Date` measure then uses `USERELATIONSHIP()` to activate the inactive ship-date relationship on demand. The lab closes by turning on **query scale-out** at the workspace level, building a report to prove the relationships/calculation group/role-playing measure all work, and optionally testing **Copilot** against the finished model.
+
+---
+
 ## Key Takeaways
 - **DAX runs after data loads; Power Query/T-SQL/notebooks run before.** Push work upstream whenever possible - reports should do as little heavy computation as possible.
 - **New semantic models on a warehouse/lakehouse default to Direct Lake**, with automatic fallback to DirectQuery unless "Direct Lake only" is set.
