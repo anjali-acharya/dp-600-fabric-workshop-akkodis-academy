@@ -118,10 +118,10 @@ Sales by Ship Date = CALCULATE(
 **The fix:** a **calculation group** defines each pattern (Total, MTD, YTD, YoY%, Last Year, YoY Change) **once**, and it applies across every base measure automatically - maintaining ~6 pattern definitions instead of 50+ measures.
 
 ### Other scale-oriented settings 
-| Setting | What it unlocks | When you need it |
-|---|---|---|
-| **XMLA read-write** (workspace setting; default is read-only) | External tools - Tabular Editor, ALM Toolkit - plus scripted, source-controlled, CI/CD-style model deployment across dev/test/prod | Managing a large Direct Lake model the way a professional data team runs source control and repeatable deployments |
-| **Query scale-out** | Creates **read-only replicas** of the model so user queries never compete with an in-progress refresh; replicas sync once refresh completes | Busy, frequently-refreshed models where refresh was previously slowing down active report users |
+| Setting | What it unlocks                                                                                                                                                                                              | When you need it |
+|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| **XMLA read-write** (workspace setting; default is read-only) | External tools - Tabular Editor, ALM Toolkit - plus scripted, source-controlled, CI/CD-style model deployment across dev/test/prod                                                                           | Managing a large Direct Lake model the way a professional data team runs source control and repeatable deployments |
+| **Query scale-out** | Creat-outes **read-only replicas** of the model so user queries never compete with an in-progress refresh; replicas sync once refresh completes                                                              | Busy, frequently-refreshed models where refresh was previously slowing down active report users |
 | **OneLake integration (write-back)** | Takes an **Import-mode** semantic model's tables and writes them back out as Delta tables in OneLake - so notebooks, pipelines, and lakehouse shortcuts can reuse business logic model authors already built | Making model-authored logic reusable by data engineers/scientists downstream, instead of it being locked inside the semantic model only |
 
 ---
@@ -133,6 +133,13 @@ Sales by Ship Date = CALCULATE(
 ![](images/day5-semantic-model.png)
 Unlike Exercise 1, this one runs entirely in the **Fabric web experience** against a lakehouse (a provided notebook seeds `DimDate`, `DimProduct`, `DimCustomer`, and a 5,000-row `FactSales` table), and it's the concrete, hands-on version of everything the session only demoed conceptually. You build a **Direct Lake** semantic model straight off those lakehouse tables, wire up the star schema with **single-direction, active relationships** and **assume referential integrity** checked (so the engine uses inner joins), and add a **fourth, inactive** relationship on `ShipDateKey` - the role-playing-dimension case from earlier. On top of four explicit measures (`Total Sales`, `Total Cost`, `Profit`, `Profit Margin`), you build an actual **calculation group** (`Time Calculations`) with six time-intelligence items - Current, Year-to-Date, Quarter-to-Date, Month-to-Date, Previous Year, and Year-over-Year Growth - that apply automatically to all four base measures instead of requiring 24 separate ones. A `Sales by Ship Date` measure then uses `USERELATIONSHIP()` to activate the inactive ship-date relationship on demand. The lab closes by turning on **query scale-out** at the workspace level, building a report to prove the relationships/calculation group/role-playing measure all work, and optionally testing **Copilot** against the finished model.
 
+### Query Scale-Out
+A **workspace-level setting** on the semantic model (Settings → Query scale-out → toggle On).
+
+- **Problem it solves:** a model refresh competes for the same compute as active report queries. On a busy, widely-shared model, this can visibly slow down or interrupt reports people are looking at *right now*.
+- **How it works:** Fabric creates **read-only replicas** of the model. User queries are served entirely from these replicas; a separate read-write copy handles the refresh in the background. Once the refresh completes, replicas sync to the latest data - report users never touch the copy that was mid-refresh.
+- **Direct Lake models:** the prerequisite ("large semantic model storage format") is already enabled automatically, so there's no extra setup - just switch it on.
+- **When to use it:** models with many concurrent viewers and/or frequent refreshes - not needed for a small model with a handful of users.
 ---
 
 ## Key Takeaways
