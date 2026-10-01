@@ -74,7 +74,39 @@ This loop **never ends** — new requirements keep arriving, so it's iterative b
 🔗 **Lab:** [Manage the semantic model lifecycle](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/21b-manage-semantic-model-lifecycle.html)
 📓 **My completed notebook:** `manage-semantic-model-lifecycle.ipynb` (includes a **Validate → Fix → Deploy** summary markdown cell at the end)
 
-This is the hands-on version of the SemPy validation concept above, plus the deployment pipeline section below, done together in one notebook + two workspaces (`-dev` / `-prod`). Full detail (what was checked, what was found, how it was fixed) is written up as the markdown cell appended to the notebook itself rather than duplicated here — see that file for the complete walkthrough.
+This is the hands-on version of the SemPy validation concept above, plus the deployment pipeline section below, done together in one notebook + two workspaces (`-dev` / `-prod`). 
+
+## Summary & Key Takeaways — Semantic Model Lifecycle (Validate → Fix → Deploy)
+
+This notebook walked through the three stages analytics teams use to treat a semantic model like software, rather than something edited by hand in production:
+
+### 1. Validate (SemPy)
+`SemPy` connects to a published semantic model via the **XMLA endpoint** — no need to open Power BI Desktop to inspect it. Used here to:
+- List tables (`products`, `customers`, `sales`) and every column's name/type/parent table — a fast way to understand an unfamiliar model.
+- Check for **nulls and duplicate keys** → found **3 null `CustomerKey` values** in `sales`, 0 duplicate `SalesKey` values.
+- Check for **orphaned foreign keys** → `CustomerKey = 99` exists in `sales` but has no match in `customers`, meaning **10 sales rows silently produce blank customer names** in any report.
+- Run a DAX query to sanity-check real output → every product category returned the **same total sales figure**. That's the tell: with no relationships defined, the DAX engine can't filter `sales` by category at all, so it's summing the whole table every time.
+
+### 2. Fix (SemPy + TOM)
+`connect_semantic_model` opens a **read/write** connection to the model's Tabular Object Model (TOM) — the same engine Tabular Editor uses — directly from Python. Used here to **programmatically create two relationships**:
+- `sales[ProductKey] → products[ProductKey]`
+- `sales[CustomerKey] → customers[CustomerKey]`
+
+Changes commit automatically when the connection closes, and the model refreshes so the new relationships actually filter data. Re-running the exact same DAX query from the validation step now returns **different, correct totals per category** — proof the fix worked, without ever opening the Power BI model view.
+
+> 💡 This requires the **XMLA read/write endpoint**, enabled by default on Trial, Premium, and Fabric capacities.
+
+### 3. Deploy (Deployment Pipelines)
+Once validated, the model moves through a **Development → Production** deployment pipeline (Test stage removed for this lab) rather than being manually republished:
+- Comparing stages shows exactly which items exist only in Development.
+- **Deploy** is a one-click promotion that copies the lakehouse, notebook, and semantic model into Production, with an optional note for audit history (e.g. *"Initial deployment — validated with SemPy"*).
+- Production only updates on a **deliberate deploy**, not automatically — later Development changes don't reach users until promoted again, which is exactly the control this process exists to provide.
+- **Deployment rules** (not used in this lab, but important in real projects) let a connection string or parameter change automatically between stages — e.g. so Production always points at the real data source instead of accidentally inheriting Dev's.
+
+
+### Why this matters
+
+Publishing straight to production with no validation step risks breaking reports or quietly serving wrong numbers (exactly what the identical-category-totals bug would have done, undetected, in a live report). Running the same validation through code also means it's **repeatable** — the same checks can run against any future model change, not just a one-time manual glance.
 
 ---
 
@@ -140,6 +172,8 @@ Everything configured here (schema, verified answers, instructions) isn't just f
 
 ### Validating AI readiness — also an iteration loop
 Test with the kinds of questions real users will ask → identify wrong/unexpected answers → trace the issue (every Copilot answer shows **"Explore Answer"**, exposing the actual query it generated, plus downloadable diagnostics) → fix the model → retest. Same "it never really ends" framing as the lifecycle loop in section 2.
+
+
 
 ---
 
