@@ -158,4 +158,4 @@ Three signals an AI agent reads programmatically, not just a person browsing a c
 - **Governance isn't just for humans**  sensitivity labels, endorsement, and documentation are all signals an AI agent consumes programmatically to decide what it can access and which source to trust.
 
 ## Follow-up
-- **Day 10 (tomorrow):** finishing Day 9's security lab, a new topic on **pipelines** (explicitly **not** part of the DP-600 exam, but included as practical skill-building), a quick review session, and guidance on **scheduling/preparing for the certification exam** (home setup requirements for online testing vs. a testing center).
+- **Day 10:** finishing Day 9's security lab, a new topic on **pipelines** (explicitly **not** part of the DP-600 exam, but included as practical skill-building), a quick review session, and guidance on **scheduling/preparing for the certification exam** (home setup requirements for online testing vs. a testing center).
