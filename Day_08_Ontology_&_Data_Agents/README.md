@@ -81,9 +81,9 @@ Once an ontology is generated, Fabric automatically creates a **lakehouse** (wit
 
 ---
 
-## 🧪 Exercise 1  Build an Ontology from a Semantic Model
+## Exercise 1  Build an Ontology from a Semantic Model
 
-🔗 **Lab:** [Build an ontology from a semantic model](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/24-build-ontology-semantic-model.html)
+**Lab:** [Build an ontology from a semantic model](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/24-build-ontology-semantic-model.html)
 
 <p align="center">
   <img src="images/ontologyLab.png" alt="Descriptive alt text" />
@@ -130,7 +130,7 @@ A Fabric Data Agent lets anyone ask a plain-English question (*"What is the aver
 
 ## Exercise 2  Implement a Fabric Data Agent
 
-🔗 **Lab:** [Chat with your data using Microsoft Fabric data agents](https://learn.microsoft.com/en-us/training/modules/implement-fabric-data-agents/exercise-copilot-fabric-data-agents)
+**Lab:** [Chat with your data using Microsoft Fabric data agents](https://learn.microsoft.com/en-us/training/modules/implement-fabric-data-agents/exercise-copilot-fabric-data-agents)
 
 ---
 
