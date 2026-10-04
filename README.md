@@ -59,6 +59,7 @@ Several exercises in the back half of the course **require a paid Fabric capacit
 
 Based on a 10-day live online boot camp. Lab exercises sourced from Microsoft's official [`mslearn-fabric`](https://microsoftlearning.github.io/mslearn-fabric/) training materials, linked individually within each day's notes.
 Thanks to Akkodis Academy Australia for organizing and running this boot camp.
+
 ---
 
 ## Disclaimer
