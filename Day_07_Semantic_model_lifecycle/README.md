@@ -71,7 +71,7 @@ This loop **never ends** - new requirements keep arriving, so it's iterative by 
 
 ## Exercise - Manage the Semantic Model Lifecycle
 
-🔗 **Lab:** [Manage the semantic model lifecycle](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/21b-manage-semantic-model-lifecycle.html)
+**Lab:** [Manage the semantic model lifecycle](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/21b-manage-semantic-model-lifecycle.html)
 📓 **My completed notebook:** `manage-semantic-model-lifecycle.ipynb` (includes a **Validate → Fix → Deploy** summary markdown cell at the end)
 
 This is the hands-on version of the SemPy validation concept above, plus the deployment pipeline section below, done together in one notebook + two workspaces (`-dev` / `-prod`). 
@@ -94,7 +94,7 @@ This notebook walked through the three stages analytics teams use to treat a sem
 
 Changes commit automatically when the connection closes, and the model refreshes so the new relationships actually filter data. Re-running the exact same DAX query from the validation step now returns **different, correct totals per category** - proof the fix worked, without ever opening the Power BI model view.
 
-> 💡 This requires the **XMLA read/write endpoint**, enabled by default on Trial, Premium, and Fabric capacities.
+> This requires the **XMLA read/write endpoint**, enabled by default on Trial, Premium, and Fabric capacities.
 
 ### 3. Deploy (Deployment Pipelines)
 Once validated, the model moves through a **Development → Production** deployment pipeline (Test stage removed for this lab) rather than being manually republished:
@@ -115,7 +115,7 @@ Publishing straight to production with no validation step risks breaking reports
 - A pipeline needs **at least two stages** (commonly Development / Test / Production - the lifecycle exercise above uses just Development/Production); **each stage is a separate Fabric workspace**.
 - **Deploy is a one-click promotion** - it compares source vs. target, shows exactly which items differ, and overwrites the target with the source version for whatever you select.
 - **Deployment rules** let specific settings (a connection string, a parameter) **change automatically** as content moves between stages - e.g. so Production always points at the real data source instead of silently inheriting Dev's test database. (Live Q&A confirmed: deployment is **all-or-nothing per item** - there's no way to promote just part of a warehouse; the workaround for partial promotion is to split that content into a **separate warehouse** and use shortcuts back to the original.)
-- **Deletion behavior, discovered live:** deleting an item in Development and redeploying does **not immediately delete** the corresponding item in Production - it enters a **retention period** first rather than being hard-deleted on the spot. (The instructor was candid that this wasn't something they'd fully verified beforehand - worth testing/confirming in your own environment rather than assuming a specific retention length.)
+- **Deletion behavior, discovered live:** deleting an item in Development and redeploying does **not immediately delete** the corresponding item in Production - it enters a **retention period** first rather than being hard-deleted on the spot.
 
 <p align="center">
   <img src="images/deployment_pipeline.png"  />
@@ -123,7 +123,7 @@ Publishing straight to production with no validation step risks breaking reports
 
 ---
 
-## 5️⃣ Maintain: Refresh, Orchestration & Monitoring
+## Maintain: Refresh, Orchestration & Monitoring
 
 | Mechanism | Purpose | Key detail |
 |---|---|---|
@@ -136,8 +136,6 @@ Publishing straight to production with no validation step risks breaking reports
 
 
 ## Preparing a Semantic Model for Copilot / AI
-
-> **Demo only, not a hands-on requirement for trial users.** This module's lab needs a **paid Fabric capacity** - Copilot doesn't function on trial capacity - so the instructor demonstrated it live rather than assigning it as an exercise. Included here for completeness since it's official DP-600 content.
 
 ### Grounding - the step that makes Copilot trustworthy instead of generic
 Before Copilot can answer a question about your data, it has to understand your data - this is **grounding**, and it's what separates a generic chatbot from one giving answers rooted in your actual model.
@@ -158,7 +156,7 @@ A table named `sales_V2` is technically valid but meaningless to both an AI mode
 |---|---|---|
 | **AI data schema** | Exactly which tables/columns Copilot is allowed to see at all - hide surrogate keys, ETL columns, anything not meant for business consumption | Removed `CustomerKey`/`ProductKey`/`SalesOrderLineNumber`/`SourceSystem` from the simplified schema; kept `CustomerName`, `Category`, `TotalSales`, etc. Fewer exposed fields = faster, more accurate retrieval. |
 | **Verified answers** | Locks a **specific, pre-approved visual** to a trigger phrase (plus its synonyms) so a common question always gets a deterministic, instant answer instead of Copilot regenerating a fresh query every time | "Show me the total sales" / "Show me the total revenue" / "How much did we sell" all mapped to one verified card visual. |
-| **AI instructions** | Free-form business context - the "system prompt" layer - telling Copilot things it can't infer from schema alone (how your org defines a term, scope boundaries, what it should/shouldn't answer) | *"Revenue and sales refer to the Total Sales measure. Products are organized by category and subcategory. Use 'top products' to mean ranked by total sales, descending."* (The instructor noted you can even have Copilot itself draft this text from a screenshot of your model.) |
+| **AI instructions** | Free-form business context - the "system prompt" layer - telling Copilot things it can't infer from schema alone (how your org defines a term, scope boundaries, what it should/shouldn't answer) | *"Revenue and sales refer to the Total Sales measure. Products are organized by category and subcategory. Use 'top products' to mean ranked by total sales, descending."* |
 
 - **Approved for Copilot** is a separate settings flag on the semantic model - it's the organizational signal that a model has been reviewed and is ready for AI consumption, not just technically configured.
 - **Synonyms** configuration (previously under the Modeling ribbon's Q&A setup) is **being retired in December 2026** and was skipped in the live demo for that reason - don't invest time setting it up going forward.

@@ -71,7 +71,7 @@ If you want a measure like `SUM(Sales[Amount])` but `Amount` doesn't physically 
 ```dax
 Total Revenue = SUMX(Sales, Sales[Quantity] * Sales[UnitPrice])
 ```
-This walks every row (row context), multiplies quantity × price, and **sums the result while respecting whatever filter is currently applied** (filter context) - nothing is stored; it recomputes live. This is why the instructor's rule of thumb is: **prefer iterator measures over calculated columns** - same result, no permanent memory cost. (One caveat raised in chat: iterators are compute-heavy, so avoid deeply nesting them.)
+This walks every row (row context), multiplies quantity × price, and **sums the result while respecting whatever filter is currently applied** (filter context) - nothing is stored; it recomputes live. This is why the rule of thumb is: **prefer iterator measures over calculated columns** - same result, no permanent memory cost. (One caveat raised in chat: iterators are compute-heavy, so avoid deeply nesting them.)
 
 ---
 

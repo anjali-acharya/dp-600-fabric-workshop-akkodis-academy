@@ -168,8 +168,7 @@ Restricts access to an entire **table** or a specific **column**, rather than fi
 2. **No Power BI Desktop UI for OLS** - must be configured online (via TMDL); RLS role rules *can* be created in Desktop, but assigning users to roles is done online.
 3. **Assign roles through Entra security groups, not individual users** - an admin manages group membership; when someone joins, leaves, or moves teams, the admin only updates group membership once, and Power BI automatically reflects it everywhere the group is used as a role assignment. Adding users one by one doesn't scale to a large organization.
 4. **Verify with "View As" (Test as role)** - lets you preview a report exactly as a member of a given role would see it, without actually being that person.
-5. ⚠️ **"View As" does not fully validate every consumption path** - per Microsoft's own documentation, it does **not** reliably validate **Q&A, Quick Insights, and Copilot**. For those, the instructor's guidance is: **test with real users signed in**, not just "View As," since it doesn't give full confidence for those specific experiences.
-
+5. ⚠️ **"View As" does not fully validate every consumption path** - per Microsoft's own documentation, it does **not** reliably validate.
 ---
 
 ## Note: Semantic model Security hands-on exercise is on next workshop
